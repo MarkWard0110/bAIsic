@@ -6,9 +6,9 @@ using System.Text.Json;
 
 namespace BAIsic.LlmApi.Ollama.Tests
 {
-    public class OllamaClientTests
+    public class OllamaClientListLocalModelsTests
     {
-        [RequireEnvironmentVariableFactAttribute(OllamaTestConsts.EnvironmentVariable.OllamaHost)]
+        [RequireEnvironmentVariableFact(OllamaTestConsts.EnvironmentVariable.OllamaHost)]
         public async Task ListLocalModelsAsync_ReturnsNotNull_WhenCalled()
         {
             var ollamaClient = OllamaClientExtensions.CreateOllamaClient();

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Sdk;
 
 namespace BAIsic.Tests
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public abstract class IsEnvironmentSupportedFactAttribute(string skipMessage) : FactAttribute
+    public abstract class IsEnvironmentSupportedDataAttribute(string skipMessage) : DataAttribute
     {
         private readonly string _skipMessage = skipMessage ?? throw new ArgumentNullException(nameof(skipMessage));
 
