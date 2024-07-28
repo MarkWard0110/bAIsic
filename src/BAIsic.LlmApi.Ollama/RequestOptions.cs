@@ -97,7 +97,7 @@ namespace BAIsic.LlmApi.Ollama
         /// </summary>
         [JsonPropertyName("stop")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Stop { get; set; }
+        public string[]? Stop { get; set; }
 
         /// <summary>
         /// Tail free sampling is used to reduce the impact of less probable tokens from the output.
