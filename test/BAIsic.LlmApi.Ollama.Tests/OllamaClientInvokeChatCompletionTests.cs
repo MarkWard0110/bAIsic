@@ -68,7 +68,7 @@ namespace BAIsic.LlmApi.Ollama.Tests
         }
 
         [Theory]
-        [RequireModelData(OllamaTestConsts.Model.Llava_7b)]
+        [RequireModelData(OllamaTestConsts.Model.Llava_Phi3_3_8b)]
         public async Task InvokeChatCompletionAsync_ReturnsChatResponse_WhenCallImageWithNoStream(string model)
         {
             var ollamaClient = OllamaClientExtensions.CreateOllamaClient();
@@ -243,7 +243,7 @@ namespace BAIsic.LlmApi.Ollama.Tests
                             Name = "get_flight_times",
                             Description = "Get flight times between two cities",
                             Parameters = new FunctionParameters() {
-                                Required = ["desparture", "arrival"],
+                                Required = ["departure", "arrival"],
                                 Properties = new Dictionary<string, FunctionProperty>(){
                                     ["desparture"] = new FunctionProperty(){
                                         Type = "string",
@@ -272,7 +272,7 @@ namespace BAIsic.LlmApi.Ollama.Tests
             Assert.NotNull(toolCall.Function);
             Assert.Equal("get_flight_times", toolCall.Function.Name);
             Assert.NotNull(toolCall.Function.Arguments);
-            Assert.Equal("NYC", toolCall.Function.Arguments["desparture"]);
+            Assert.Equal("NYC", toolCall.Function.Arguments["departure"]);
             Assert.Equal("LAX", toolCall.Function.Arguments["arrival"]);
 
             // perform tool invocation (mocked)
