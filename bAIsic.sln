@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.LlmApi.Ollama.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Tests", "test\BAIsic.Tests\BAIsic.Tests.csproj", "{8F37E59D-26CE-44E5-B813-CB955DADA21A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Agent", "src\BAIsic.Agent\BAIsic.Agent.csproj", "{DEA9DB22-C137-4579-8C11-0DCA92C28763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Interlocutor", "src\BAIsic.Interlocutor\BAIsic.Interlocutor.csproj", "{DEA9DB22-C137-4579-8C11-0DCA92C28763}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Agent.Tests", "test\BAIsic.Agent.Tests\BAIsic.Agent.Tests.csproj", "{059D9A33-7387-44DD-90AD-985A8836A46D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Interlocutor.Tests", "test\BAIsic.Interlocutor.Tests\BAIsic.Interlocutor.Tests.csproj", "{059D9A33-7387-44DD-90AD-985A8836A46D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAIsic.AgentWithOllama.Tests", "test\BAIsic.AgentWithOllama.Tests\BAIsic.AgentWithOllama.Tests.csproj", "{A55E17B9-54A0-4339-B3B7-F4930DA05A80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{059D9A33-7387-44DD-90AD-985A8836A46D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{059D9A33-7387-44DD-90AD-985A8836A46D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{059D9A33-7387-44DD-90AD-985A8836A46D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A55E17B9-54A0-4339-B3B7-F4930DA05A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55E17B9-54A0-4339-B3B7-F4930DA05A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55E17B9-54A0-4339-B3B7-F4930DA05A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55E17B9-54A0-4339-B3B7-F4930DA05A80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{8F37E59D-26CE-44E5-B813-CB955DADA21A} = {2B614A06-AFE3-437F-B927-266D27A5BD4E}
 		{DEA9DB22-C137-4579-8C11-0DCA92C28763} = {53775BEA-B629-4B92-A05B-BF9FA501FD12}
 		{059D9A33-7387-44DD-90AD-985A8836A46D} = {2B614A06-AFE3-437F-B927-266D27A5BD4E}
+		{A55E17B9-54A0-4339-B3B7-F4930DA05A80} = {2B614A06-AFE3-437F-B927-266D27A5BD4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {118D48B2-F36C-49F1-870A-E93A03618F69}

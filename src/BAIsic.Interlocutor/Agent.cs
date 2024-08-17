@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAIsic.Agent
+namespace BAIsic.Interlocutor
 {
     public abstract class Agent : IAgent
     {
@@ -14,11 +14,16 @@ namespace BAIsic.Agent
         protected readonly IList<PrepareHandlerAsync> _prepareReceiveHandlers = [];
         protected readonly IList<GenerateReplyHandlerAsync> _generateReplyHandlers = [];
 
-        public Agent(string name)
+        public Agent(string name, string? systemPrompt)
         {
             _name = name;
+            _systemPrompt = systemPrompt;
             _prepareSendHandlers.Add(PrepareSendRoleAsync);
             _prepareReceiveHandlers.Add(PrepareReceiveRoleAsync);
+        }
+
+        public Agent(string name) : this(name, null)
+        {
         }
 
         public string Name => _name;
@@ -42,41 +47,49 @@ namespace BAIsic.Agent
             return null;
         }
 
-        public async Task<Message> PrepareReceiveMessageAsync(Message message)
+        public async Task<Message?> PrepareReceiveMessageAsync(Message message)
         {
+            Message? prepareMessage = message;
             foreach (var handler in _prepareReceiveHandlers)
             {
-                message = await handler(message);
+                prepareMessage = await handler(prepareMessage);
             }
 
-            return message;
+            return prepareMessage;
         }
 
-        public async Task<Message> PrepareSendMessageAsync(Message message)
+        public async Task<Message?> PrepareSendMessageAsync(Message message)
         {
+            Message? prepareMessage = message;
             foreach (var handler in _prepareSendHandlers)
             {
-                message = await handler(message);
+                prepareMessage = await handler(prepareMessage);
             }
 
-            return message;
+            return prepareMessage;
         }
 
-        private Task<Message> PrepareSendRoleAsync(Message message)
+        private Task<Message?> PrepareSendRoleAsync(Message? message)
         {
-            if (!string.Equals(message.Role, AgentConsts.Roles.Assistant, StringComparison.Ordinal))
+            if (message != null)
             {
-                return Task.FromResult(message with { Role = AgentConsts.Roles.Assistant });
+                if (!string.Equals(message.Role, AgentConsts.Roles.Assistant, StringComparison.Ordinal))
+                {
+                    return Task.FromResult<Message?>(message with { Role = AgentConsts.Roles.Assistant });
+                }
             }
 
             return Task.FromResult(message);
         }
 
-        private Task<Message> PrepareReceiveRoleAsync(Message message)
+        private Task<Message?> PrepareReceiveRoleAsync(Message? message)
         {
-            if (!string.Equals(message.Role, AgentConsts.Roles.User, StringComparison.Ordinal))
+            if (message != null)
             {
-                return Task.FromResult(message with { Role = AgentConsts.Roles.User });
+                if (!string.Equals(message.Role, AgentConsts.Roles.User, StringComparison.Ordinal))
+                {
+                    return Task.FromResult<Message?>(message with { Role = AgentConsts.Roles.User });
+                }
             }
 
             return Task.FromResult(message);

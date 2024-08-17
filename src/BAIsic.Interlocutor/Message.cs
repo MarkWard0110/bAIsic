@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAIsic.Agent
+namespace BAIsic.Interlocutor
 {
     public record Message(string Role, string Text, string[]? Images = null);
 

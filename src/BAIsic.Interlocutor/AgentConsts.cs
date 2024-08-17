@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAIsic.Agent
+namespace BAIsic.Interlocutor
 {
     public static class AgentConsts
     {
@@ -12,6 +12,7 @@ namespace BAIsic.Agent
         {
             public const string User = "user";
             public const string Assistant = "assistant";
+            public const string System = "system";
         }
     }
 }

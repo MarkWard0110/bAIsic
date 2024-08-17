@@ -1,6 +1,6 @@
 using BAIsic.Tests;
 
-namespace BAIsic.Agent.Tests
+namespace BAIsic.Interlocutor.Tests
 {
     public class AgentTests
     {
@@ -39,6 +39,7 @@ namespace BAIsic.Agent.Tests
             var message = new Message(AgentConsts.Roles.Assistant, "prompt text");
 
             var preparedSendMessage = await justTheAgent.PrepareSendMessageAsync(message);
+            Assert.NotNull(preparedSendMessage);
             Assert.Equal(message, preparedSendMessage);
             Assert.Equal(AgentConsts.Roles.Assistant, preparedSendMessage.Role);
         }
@@ -50,6 +51,7 @@ namespace BAIsic.Agent.Tests
             var message = new Message(AgentConsts.Roles.User, "prompt text");
 
             var preparedReceiveMessage = await justTheAgent.PrepareReceiveMessageAsync(message);
+            Assert.NotNull(preparedReceiveMessage);
             Assert.Equal(message, preparedReceiveMessage);
             Assert.Equal(AgentConsts.Roles.User, preparedReceiveMessage.Role);
         }
@@ -60,12 +62,15 @@ namespace BAIsic.Agent.Tests
             var justTheAgent = new JustTheAgent(BAIsicTestConventions.Agent.RandomName());
 
             var preparedSendMessage = await justTheAgent.PrepareSendMessageAsync(new Message("arole", "prompt text"));
+            Assert.NotNull(preparedSendMessage);
             Assert.Equal(AgentConsts.Roles.Assistant, preparedSendMessage.Role);
 
             preparedSendMessage = await justTheAgent.PrepareSendMessageAsync(new Message("user", "prompt text"));
+            Assert.NotNull(preparedSendMessage);
             Assert.Equal(AgentConsts.Roles.Assistant, preparedSendMessage.Role);
 
             preparedSendMessage = await justTheAgent.PrepareSendMessageAsync(new Message("Assistant", "prompt text"));
+            Assert.NotNull(preparedSendMessage);
             Assert.Equal(AgentConsts.Roles.Assistant, preparedSendMessage.Role);
         }
 
@@ -75,12 +80,15 @@ namespace BAIsic.Agent.Tests
             var justTheAgent = new JustTheAgent(BAIsicTestConventions.Agent.RandomName());
 
             var preparedReceiveMessage = await justTheAgent.PrepareReceiveMessageAsync(new Message("arole", "prompt text"));
+            Assert.NotNull(preparedReceiveMessage);
             Assert.Equal(AgentConsts.Roles.User, preparedReceiveMessage.Role);
 
             preparedReceiveMessage = await justTheAgent.PrepareReceiveMessageAsync(new Message("User", "prompt text"));
+            Assert.NotNull(preparedReceiveMessage);
             Assert.Equal(AgentConsts.Roles.User, preparedReceiveMessage.Role);
 
             preparedReceiveMessage = await justTheAgent.PrepareReceiveMessageAsync(new Message("assistant", "prompt text"));
+            Assert.NotNull(preparedReceiveMessage);
             Assert.Equal(AgentConsts.Roles.User, preparedReceiveMessage.Role);
         }
 
@@ -93,6 +101,7 @@ namespace BAIsic.Agent.Tests
             var message = new Message(AgentConsts.Roles.Assistant, "PRoMpT TeXT");
 
             var preparedSendMessage = await mockAgent.PrepareSendMessageAsync(message);
+            Assert.NotNull(preparedSendMessage);
             Assert.NotEqual(message, preparedSendMessage);
             Assert.Equal(AgentConsts.Roles.Assistant, preparedSendMessage.Role);
             Assert.Equal(message.Text.ToUpper(), preparedSendMessage.Text);
@@ -107,6 +116,7 @@ namespace BAIsic.Agent.Tests
             var message = new Message(AgentConsts.Roles.Assistant, "PRoMpT TeXT");
 
             var preparedSendMessage = await mockAgent.PrepareSendMessageAsync(message);
+            Assert.NotNull(preparedSendMessage);
             Assert.NotEqual(message, preparedSendMessage);
             Assert.Equal(AgentConsts.Roles.Assistant, preparedSendMessage.Role);
             Assert.Equal(message.Text.ToLower(), preparedSendMessage.Text);
@@ -121,6 +131,7 @@ namespace BAIsic.Agent.Tests
             var message = new Message(AgentConsts.Roles.User, "PRoMpT TeXT");
 
             var preparedReceiveMessage = await mockAgent.PrepareReceiveMessageAsync(message);
+            Assert.NotNull(preparedReceiveMessage);
             Assert.NotEqual(message, preparedReceiveMessage);
             Assert.Equal(AgentConsts.Roles.User, preparedReceiveMessage.Role);
             Assert.Equal(message.Text.ToUpper(), preparedReceiveMessage.Text);
@@ -135,6 +146,7 @@ namespace BAIsic.Agent.Tests
             var message = new Message(AgentConsts.Roles.User, "PRoMpT TeXT");
 
             var preparedReceiveMessage = await mockAgent.PrepareReceiveMessageAsync(message);
+            Assert.NotNull(preparedReceiveMessage);
             Assert.NotEqual(message, preparedReceiveMessage);
             Assert.Equal(AgentConsts.Roles.User, preparedReceiveMessage.Role);
             Assert.Equal(message.Text.ToLower(), preparedReceiveMessage.Text);
@@ -190,5 +202,27 @@ namespace BAIsic.Agent.Tests
             Assert.Null(reply);
         }
 
+        [Fact]
+        public async Task Agent_MessageIsNull_WhenPrepareSendReturnsNull()
+        {
+            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddNullPrepareSend();
+
+            var message = new Message(AgentConsts.Roles.Assistant, "prompt text");
+
+            var preparedSendMessage = await mockAgent.PrepareSendMessageAsync(message);
+            Assert.Null(preparedSendMessage);
+        }
+
+        [Fact]
+        public async Task Agent_MessageIsNull_WhenPrepareReceiveReturnsNull()
+        {
+            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddNullPrepareReceive();
+            var message = new Message(AgentConsts.Roles.User, "prompt text");
+
+            var preparedReceiveMessage = await mockAgent.PrepareReceiveMessageAsync(message);
+            Assert.Null(preparedReceiveMessage);
+        }
     }
 }

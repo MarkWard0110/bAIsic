@@ -27,7 +27,7 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\..\src\BAIsic.Agent\BAIsic.Agent.csproj" />
+    <ProjectReference Include="..\..\src\BAIsic.Interlocutor\BAIsic.Interlocutor.csproj" />
     <ProjectReference Include="..\BAIsic.Tests\BAIsic.Tests.csproj" />
   </ItemGroup>
 

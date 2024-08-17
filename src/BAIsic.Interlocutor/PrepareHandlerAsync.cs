@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAIsic.Agent.Tests
+namespace BAIsic.Interlocutor
 {
-    public class JustTheAgent(string name) : Agent(name)
-    {
-    }
+    public delegate Task<Message?> PrepareHandlerAsync(Message? message);
 }

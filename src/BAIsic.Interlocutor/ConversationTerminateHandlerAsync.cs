@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAIsic.Agent.Tests
+namespace BAIsic.Interlocutor
 {
-    public class MockAgent(string name) : Agent(name)
-    {
-    }
+    public delegate Task<bool> ConversationTerminateHandlerAsync(IAgent agent, Message message);
 }
