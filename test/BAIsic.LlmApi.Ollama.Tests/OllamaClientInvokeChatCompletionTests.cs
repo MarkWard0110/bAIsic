@@ -169,9 +169,9 @@ namespace BAIsic.LlmApi.Ollama.Tests
                             Name = "get_flight_times",
                             Description = "Get flight times between two cities",
                             Parameters = new FunctionParameters() {
-                                Required = ["desparture", "arrival"],
+                                Required = ["departure", "arrival"],
                                 Properties = new Dictionary<string, FunctionProperty>(){
-                                    ["desparture"] = new FunctionProperty(){
+                                    ["departure"] = new FunctionProperty(){
                                         Type = "string",
                                         Description = "The departure city code (airport code)"
                                     },
@@ -198,7 +198,9 @@ namespace BAIsic.LlmApi.Ollama.Tests
             Assert.NotNull(toolCall.Function);
             Assert.Equal("get_flight_times", toolCall.Function.Name);
             Assert.NotNull(toolCall.Function.Arguments);
-            Assert.Equal("NYC", toolCall.Function.Arguments["desparture"]);
+            Assert.True(toolCall.Function.Arguments.ContainsKey("departure"), $"Arguments keys: {string.Join(", ", toolCall.Function.Arguments.Keys)}");
+            Assert.Equal("NYC", toolCall.Function.Arguments["departure"]);
+            Assert.True(toolCall.Function.Arguments.ContainsKey("arrival"), $"Arguments keys: {string.Join(", ", toolCall.Function.Arguments.Keys)}");
             Assert.Equal("LAX", toolCall.Function.Arguments["arrival"]);
 
             // perform tool invocation (mocked)
