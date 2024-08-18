@@ -96,7 +96,7 @@ namespace BAIsic.Interlocutor.Tests
                 .AddHugGenerateReply("participant");
             var initialMessage = new Message(AgentConsts.Roles.User, "hello");
             var conversation = new DialogueConversation();
-            int turnCount = int.MaxValue;
+            int turnCount = 3;
 
             // Act
             var conversationResult = await conversation.InitiateChat(initiatorAgent, initialMessage, participantAgent, turnCount);
@@ -119,7 +119,7 @@ namespace BAIsic.Interlocutor.Tests
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
             var conversation = new DialogueConversation();
-            int turnCount = int.MaxValue;
+            int turnCount = 3;
 
             static async Task<bool> goodbyeTerminate(bool isInitialMessage, IAgent agent, Message message)
             {
@@ -136,8 +136,134 @@ namespace BAIsic.Interlocutor.Tests
             Assert.Empty(conversationResult.Conversation[1].Messages);
 
             Assert.Equal(new Message(AgentConsts.Roles.Assistant, "hello and goodbye"), conversationResult.Conversation[0].Messages[0]);
-            
-            
+        }
+
+        [Fact]
+        public async Task DialogConversation_TerminateParticipantReceivePrepare_WhenCalled()
+        {
+            // Arrange
+            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddHugGenerateReply("initiator");
+            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddNullPrepareReceive()
+                .AddLiteralGenerateReply(true, "goodbye");
+
+            var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
+            var conversation = new DialogueConversation();
+            int turnCount = 3;
+
+            // Act
+            var conversationResult = await conversation.InitiateChat(initiatorAgent, initialMessage, participantAgent, turnCount);
+
+            // Assert
+            Assert.Equal(0, conversationResult.TurnCount);
+            Assert.Equal(2, conversationResult.Conversation.Count);
+            Assert.Single(conversationResult.Conversation[0].Messages);
+            Assert.Empty(conversationResult.Conversation[1].Messages);
+
+            Assert.Equal(new Message(AgentConsts.Roles.Assistant, "hello and goodbye"), conversationResult.Conversation[0].Messages[0]);
+        }
+
+        [Fact]
+        public async Task DialogConversation_TerminateParticipantGenerateReply_WhenCalled()
+        {
+            // Arrange
+            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddHugGenerateReply("initiator");
+            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddLiteralGenerateReply(true, null);
+
+            var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
+            var conversation = new DialogueConversation();
+            int turnCount = 3;
+
+            // Act
+            var conversationResult = await conversation.InitiateChat(initiatorAgent, initialMessage, participantAgent, turnCount);
+
+            // Assert
+            Assert.Equal(0, conversationResult.TurnCount);
+            Assert.Equal(2, conversationResult.Conversation.Count);
+            Assert.Single(conversationResult.Conversation[0].Messages);
+            Assert.Single(conversationResult.Conversation[1].Messages);
+
+            Assert.Equal(new Message(AgentConsts.Roles.Assistant, "hello and goodbye"), conversationResult.Conversation[0].Messages[0]);
+        }
+
+        [Fact]
+        public async Task DialogConversation_TerminateParticipantSendPrepare_WhenCalled()
+        {
+            // Arrange
+            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddHugGenerateReply("initiator");
+            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddNullPrepareSend()
+                .AddLiteralGenerateReply(true, "goodbye");
+
+            var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
+            var conversation = new DialogueConversation();
+            int turnCount = 3;
+
+            // Act
+            var conversationResult = await conversation.InitiateChat(initiatorAgent, initialMessage, participantAgent, turnCount);
+
+            // Assert
+            Assert.Equal(0, conversationResult.TurnCount);
+            Assert.Equal(2, conversationResult.Conversation.Count);
+            Assert.Single(conversationResult.Conversation[0].Messages);
+            Assert.Single(conversationResult.Conversation[1].Messages);
+
+            Assert.Equal(new Message(AgentConsts.Roles.Assistant, "hello and goodbye"), conversationResult.Conversation[0].Messages[0]);
+        }
+
+        [Fact]
+        public async Task DialogConversation_TerminateInitiatorReceivePrepare_WhenCalled()
+        {
+            // Arrange
+            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddNullPrepareReceive()
+                .AddHugGenerateReply("initiator");
+            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddLiteralGenerateReply(true, "goodbye");
+
+            var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
+            var conversation = new DialogueConversation();
+            int turnCount = 3;
+
+            // Act
+            var conversationResult = await conversation.InitiateChat(initiatorAgent, initialMessage, participantAgent, turnCount);
+
+            // Assert
+            Assert.Equal(0, conversationResult.TurnCount);
+            Assert.Equal(2, conversationResult.Conversation.Count);
+            Assert.Single(conversationResult.Conversation[0].Messages);
+            Assert.Equal(2, conversationResult.Conversation[1].Messages.Count);
+
+            Assert.Equal(new Message(AgentConsts.Roles.Assistant, "hello and goodbye"), conversationResult.Conversation[0].Messages[0]);
+        }
+
+        [Fact]
+        public async Task DialogConversation_TerminateInitiatorGenerateReply_WhenCalled()
+        {
+            // Arrange
+            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddLiteralGenerateReply(true, null);
+            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+                .AddLiteralGenerateReply(true, "goodbye");
+
+            var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
+            var conversation = new DialogueConversation();
+            int turnCount = 3;
+
+            // Act
+            var conversationResult = await conversation.InitiateChat(initiatorAgent, initialMessage, participantAgent, turnCount);
+
+            // Assert
+            Assert.Equal(1, conversationResult.TurnCount);
+            Assert.Equal(2, conversationResult.Conversation.Count);
+            Assert.Equal(2, conversationResult.Conversation[0].Messages.Count);
+            Assert.Equal(2, conversationResult.Conversation[1].Messages.Count);
+
+            Assert.Equal(new Message(AgentConsts.Roles.Assistant, "hello and goodbye"), conversationResult.Conversation[0].Messages[0]);
         }
 
         [Fact]
@@ -150,7 +276,7 @@ namespace BAIsic.Interlocutor.Tests
                 .AddLiteralGenerateReply(true, "goodbye");
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
             var conversation = new DialogueConversation();
-            int turnCount = int.MaxValue;
+            int turnCount = 3;
 
             async Task<bool> goodbyeTerminate(bool isInitialMessage, IAgent agent, Message message)
             {
