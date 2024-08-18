@@ -15,6 +15,7 @@ namespace BAIsic.Interlocutor
             List<Message> initiatorMessages = [];
             List<Message> participantMessages = [];
             int turnCount = 0;
+            bool isInitialMessage = true;
 
             // initialize initiator
             if (!string.IsNullOrEmpty(initiator.SystemPrompt))
@@ -42,17 +43,18 @@ namespace BAIsic.Interlocutor
                     break;
                 }
 
+                initiatorMessages.Add(initiatorSendMessage);
+
                 // termination handler check
                 if (terminateHandler != null)
                 {
-                    if (await terminateHandler(initiator, initiatorSendMessage))
+                    if (await terminateHandler(isInitialMessage, initiator, initiatorSendMessage))
                     {
                         // terminate conversation (terminate handler on initiator send)
                         break;
                     }
                 }
-
-                initiatorMessages.Add(initiatorSendMessage);
+                isInitialMessage = false;
 
                 // participant receive
                 var participantReceiveMessage = await participant.PrepareReceiveMessageAsync(initiatorSendMessage);
@@ -108,7 +110,7 @@ namespace BAIsic.Interlocutor
                 // terminate handler check
                 if (terminateHandler != null)
                 {
-                    if (await terminateHandler(participant, participantSendMessage))
+                    if (await terminateHandler(isInitialMessage, participant, participantSendMessage))
                     {
                         // terminate conversation (terminate handler on participant send)
                         break;
