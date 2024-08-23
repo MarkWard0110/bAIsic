@@ -9,7 +9,7 @@ namespace BAIsic.Interlocutor
 {
     public class DialogueConversation : IConversation
     {
-        public async Task<ConversationResult> InitiateChat(IAgent initiator, Message initialMessage, IAgent participant, int maximumTurnCount = 1, ConversationTerminateHandlerAsync? terminateHandler = null)
+        public async Task<ConversationResult> InitiateChat(IAgent initiator, Message initialMessage, IAgent participant, int maximumTurnCount = 1, ConversationTerminateHandlerAsync? terminateHandler = null, IEnumerable<Message>? initiatorInitMessages=null, IEnumerable<Message>? participantInitMessages=null)
         {
             // initialize the conversation
             List<Message> initiatorMessages = [];
@@ -18,15 +18,29 @@ namespace BAIsic.Interlocutor
             bool isInitialMessage = true;
 
             // initialize initiator
-            if (!string.IsNullOrEmpty(initiator.SystemPrompt))
+            if (initiatorInitMessages != null)
             {
-                initiatorMessages.Add(AgentConventions.SystemMessage(initiator.SystemPrompt));
+                initiatorMessages.AddRange(initiatorInitMessages);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(initiator.SystemPrompt))
+                {
+                    initiatorMessages.Add(AgentConventions.SystemMessage(initiator.SystemPrompt));
+                }
             }
 
             // initialize participant
-            if (!string.IsNullOrEmpty(participant.SystemPrompt))
+            if (participantInitMessages != null)
             {
-                participantMessages.Add(AgentConventions.SystemMessage(participant.SystemPrompt));
+                participantMessages.AddRange(participantInitMessages);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(participant.SystemPrompt))
+                {
+                    participantMessages.Add(AgentConventions.SystemMessage(participant.SystemPrompt));
+                }
             }
 
             var initiatorMessage = initialMessage;
