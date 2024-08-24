@@ -56,6 +56,6 @@ namespace BAIsic.LlmApi.Ollama
         /// </summary>
         [JsonPropertyName("keep_alive")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? KeepAlive { get; set; }
+        public int? KeepAlive { get; set; }
     }
 }

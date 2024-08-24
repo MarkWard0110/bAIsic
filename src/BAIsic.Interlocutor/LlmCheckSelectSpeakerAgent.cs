@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BAIsic.Interlocutor
 {
-    public class CheckSelectSpeakerAgent : Agent, ICheckSelectSpeakerAgent
+    public class LlmCheckSelectSpeakerAgent : Agent, ICheckSelectSpeakerAgent
     {
 
         private readonly string _noneTemplate;
         private IList<IConversableAgent>? _agents = null;
-        public CheckSelectSpeakerAgent(string name, string noneTemplate) : base(name, null)
+        public LlmCheckSelectSpeakerAgent(string name, string noneTemplate) : base(name, null)
         {
             _generateReplyHandlers.Add(GenerateReplyHandlerAsync);
             _noneTemplate = noneTemplate;

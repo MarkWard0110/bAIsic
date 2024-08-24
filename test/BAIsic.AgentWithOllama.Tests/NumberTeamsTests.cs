@@ -12,8 +12,9 @@ namespace BAIsic.AgentWithOllama.Tests
     public class NumberTeamsTests
     {
         [Theory]
-        //[RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
-        [RequireModelData("llama3:70b-instruct-q8_0")]
+        [RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
+        //[RequireModelData("llama3:70b-instruct-q8_0")]
+        //[RequireModelData("llama3.1:8b-instruct-fp16")]
         public async Task NumberTeamsTest(string model)
         {
 
@@ -91,10 +92,11 @@ Once we have the total tally from all nine players, sum up all three teams' tall
             speakerTransitionsDict["C0"].Add("B0");
 
             // --------------------------------------------------------------
-            var selectSpeakerAgent = new SelectSpeakerAgent(BAIsicTestConventions.Agent.RandomName())
+            LlmSelectSpeakerAgentConfig config = new LlmSelectSpeakerAgentConfig();
+            var selectSpeakerAgent = new LlmSelectSpeakerAgent(BAIsicTestConventions.Agent.RandomName(), config)
                 .AddOllamaGenerateReply(model);
 
-            var agentSelectSpeaker = new AgentSelectSpeaker(selectSpeakerAgent);
+            var agentSelectSpeaker = new LlmSpeakerSelector(selectSpeakerAgent);
 
 
             static async Task<bool> Terminate(bool isInitialMessage, IAgent agent, Message message)
@@ -107,7 +109,8 @@ Once we have the total tally from all nine players, sum up all three teams' tall
             agents.Add(initiatorAgent);
             speakerTransitionsDict[initiatorAgent.Name] = ["A0"];
 
-            var groupConversation = new GroupConversation(agents, agentSelectSpeaker.SelectSpeakerAsync, allowedTransitions: speakerTransitionsDict, maxTurnCount:20, terminationHandler: Terminate);
+            int maxTurnCount = 30;
+            var groupConversation = new GroupConversation(agents, agentSelectSpeaker.SelectSpeakerAsync, allowedTransitions: speakerTransitionsDict, maxTurnCount: maxTurnCount, terminationHandler: Terminate);
 
             var initialMessage = new Message(AgentConsts.Roles.User, @"There are 9 players in this game, split equally into Teams A, B, C. Therefore each team has 3 players, including the team leader.
 The task is to find out the sum of chocolate count from all nine players. I will now start with the A0 team leader.
@@ -116,7 +119,9 @@ NEXT: A0");
             var result = await groupConversation.InitiateChatAsync(initiatorAgent, initialMessage);
 
             Assert.NotNull(result);
-            
+            Assert.NotEqual(maxTurnCount, result.TurnCount);
+
+            Assert.True(result.Conversation.First().Messages.Last().Text.Contains("TERMINATE", StringComparison.OrdinalIgnoreCase));
         }
     }
 }

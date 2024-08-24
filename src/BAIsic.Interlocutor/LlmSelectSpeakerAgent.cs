@@ -6,27 +6,15 @@ using System.Threading.Tasks;
 
 namespace BAIsic.Interlocutor
 {
-    public class SelectSpeakerAgent : Agent, ISelectSpeakerAgent
+    public class LlmSelectSpeakerAgent : Agent, ISelectSpeakerAgent
     {
-        const string SelectSpeakerMessageTemplate = @"You are in a role play game. The following roles are available:
-{roles}.
-Read the following conversation.
-Then select the next role from {agentlist} to play. Only return the role.";
-        const string SelectSpeakerPrompt = "Read the above conversation. Then select the next role from {agentlist} to play. Only return the role.";
-        private const string NoneSelectedPrompt =
-@"You didn't choose a speaker. As a reminder, to determine the speaker use these prioritised rules:
-1. If the context refers to themselves as a speaker e.g. ""As the..."" , choose that speaker's name
-2. If it refers to the ""next"" speaker name, choose that name
-3. Otherwise, choose the first provided speaker's name in the context
-The names are case-sensitive and should not be abbreviated or changed.
-The only names that are accepted are {agentlist}.
-Respond with ONLY the name of the speaker and DO NOT provide a reason.";
-
         private readonly ICheckSelectSpeakerAgent _checkSelectSpeakerAgent;
+        private readonly LlmSelectSpeakerAgentConfig _config;
 
-        public SelectSpeakerAgent(string name) : base(name, null)
+        public LlmSelectSpeakerAgent(string name, LlmSelectSpeakerAgentConfig config) : base(name, null)
         {
-            _checkSelectSpeakerAgent = new CheckSelectSpeakerAgent("check_name", NoneSelectedPrompt);
+            _config = config;
+            _checkSelectSpeakerAgent = new LlmCheckSelectSpeakerAgent("check_name", _config.NoneSelectedPrompt);
         }
 
         public ICheckSelectSpeakerAgent CheckSelectSpeakerAgent => _checkSelectSpeakerAgent;
@@ -52,7 +40,7 @@ Respond with ONLY the name of the speaker and DO NOT provide a reason.";
 
         private string GetSystemMessage(string roles, string agentList)
         {
-            var systemStringBuilder = new StringBuilder(SelectSpeakerMessageTemplate);
+            var systemStringBuilder = new StringBuilder(_config.SelectSpeakerMessageTemplate);
             systemStringBuilder.Replace("{roles}", roles);
             systemStringBuilder.Replace("{agentlist}", agentList);
             return systemStringBuilder.ToString();
@@ -60,7 +48,7 @@ Respond with ONLY the name of the speaker and DO NOT provide a reason.";
 
         private string GetSelectPromptMessage(string agentList)
         {
-            return SelectSpeakerPrompt.Replace("{agentlist}", agentList);
+            return _config.SelectSpeakerPrompt.Replace("{agentlist}", agentList);
         }
 
         private IList<IConversableAgent> GetTransitions(IList<IConversableAgent> agents, List<string> transitions)

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BAIsic.Interlocutor
 {
-    public class AgentSelectSpeaker
+    public class LlmSpeakerSelector
     {
         private readonly ISelectSpeakerAgent _selectSpeakerAgent;
         private readonly ICheckSelectSpeakerAgent _checkSelectSpeakerAgent;
-        public AgentSelectSpeaker(ISelectSpeakerAgent selectSpeakerAgent)
+        public LlmSpeakerSelector(ISelectSpeakerAgent selectSpeakerAgent)
         {
             _selectSpeakerAgent = selectSpeakerAgent;
             _checkSelectSpeakerAgent = _selectSpeakerAgent.CheckSelectSpeakerAgent;
