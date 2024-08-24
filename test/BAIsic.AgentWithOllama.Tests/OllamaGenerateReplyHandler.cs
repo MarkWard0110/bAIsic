@@ -36,8 +36,8 @@ namespace BAIsic.AgentWithOllama.Tests
                 Stream = true,
                 Options = new RequestOptions()
                 {
-                    Temperature = 0.4f,
-                    TopP = 0.4f,
+                    Temperature = 0.1f,
+                    TopP = 0.1f,
                 },
                 KeepAlive = -1,
                 Messages = ollamaMessages

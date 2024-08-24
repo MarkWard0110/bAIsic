@@ -40,7 +40,7 @@ namespace BAIsic.Interlocutor
 
         private string GetSystemMessage(string roles, string agentList)
         {
-            var systemStringBuilder = new StringBuilder(_config.SelectSpeakerMessageTemplate);
+            var systemStringBuilder = new StringBuilder(_config.SelectSpeakerSystemMessageTemplate);
             systemStringBuilder.Replace("{roles}", roles);
             systemStringBuilder.Replace("{agentlist}", agentList);
             return systemStringBuilder.ToString();

@@ -8,7 +8,7 @@ namespace BAIsic.Interlocutor
 {
     public class LlmSelectSpeakerAgentConfig
     {
-        public string SelectSpeakerMessageTemplate { get; set; } = @"You are in a role play game. The following roles are available:
+        public string SelectSpeakerSystemMessageTemplate { get; set; } = @"You are in a role play game. The following roles are available:
 {roles}.
 Read the following conversation.
 Then select the next role from {agentlist} to play. Only return the role.";
