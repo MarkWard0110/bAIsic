@@ -9,7 +9,7 @@ namespace BAIsic.Interlocutor
     public interface IAgent
     {
         public string Name { get; }
-        public string? SystemPrompt { get; }
+        public string? SystemPrompt { get; set; }
 
         public Task<Message?> PrepareSendMessageAsync(Message message);
         public IList<PrepareHandlerAsync> PrepareSendHandlers { get; }

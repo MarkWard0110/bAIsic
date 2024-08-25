@@ -20,7 +20,7 @@ namespace BAIsic.Interlocutor
 
         public string Name => _agent.Name;
 
-        public string? SystemPrompt => _agent.SystemPrompt;
+        public string? SystemPrompt { get => _agent.SystemPrompt; set => _agent.SystemPrompt = value; }
 
         public IList<PrepareHandlerAsync> PrepareSendHandlers => _agent.PrepareSendHandlers;
 

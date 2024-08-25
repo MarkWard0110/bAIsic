@@ -27,8 +27,7 @@ namespace BAIsic.Interlocutor
         }
 
         public string Name => _name;
-        public string? SystemPrompt => _systemPrompt;
-
+        public string? SystemPrompt { get => _systemPrompt; set => _systemPrompt = value; }
         public IList<PrepareHandlerAsync> PrepareSendHandlers => _prepareSendHandlers;
         public IList<PrepareHandlerAsync> PrepareReceiveHandlers => _prepareReceiveHandlers;
         public IList<GenerateReplyHandlerAsync> GenerateReplyHandlers => _generateReplyHandlers;
