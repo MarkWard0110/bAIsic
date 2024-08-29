@@ -95,7 +95,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_MessageMutatesToUpper_WhenPrepareSendIsCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddToLowerPrepareSend()
                 .AddToUpperPrepareSend();
             var message = new Message(AgentConsts.Roles.Assistant, "PRoMpT TeXT");
@@ -110,7 +110,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_MessageMutatesToLower_WhenPrepareSendIsCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddToUpperPrepareSend()
                 .AddToLowerPrepareSend();
             var message = new Message(AgentConsts.Roles.Assistant, "PRoMpT TeXT");
@@ -125,7 +125,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_MessageMutatesToUpper_WhenPrepareReceiveIsCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddToLowerPrepareReceive()
                 .AddToUpperPrepareReceive();
             var message = new Message(AgentConsts.Roles.User, "PRoMpT TeXT");
@@ -140,7 +140,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_MessageMutatesToLower_WhenPrepareReceiveIsCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddToUpperPrepareReceive()
                 .AddToLowerPrepareReceive();
             var message = new Message(AgentConsts.Roles.User, "PRoMpT TeXT");
@@ -155,7 +155,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_GenerateReplyIsDoneWithMessage_WhenCalledWithLiteralGenerate()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddStringLiteralGenerateReply("reply text");
 
             var reply = await mockAgent.GenerateReplyAsync([new Message("user", "prompt text")]);
@@ -167,7 +167,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_GenerateReplyContinuesUntilIsDone_WhenCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(false, "one")
                 .AddLiteralGenerateReply(false, "two")
                 .AddLiteralGenerateReply(true, "three");
@@ -180,7 +180,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_GenerateReplyStopsAtFirstIsDone_WhenCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(false, "one")
                 .AddLiteralGenerateReply(true, "two")
                 .AddLiteralGenerateReply(false, "three");
@@ -193,7 +193,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_GenerateReplyIsDoneWithNull_WhenCalled()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(false, "one")
                 .AddLiteralGenerateReply(true, null)
                 .AddLiteralGenerateReply(true, "three");
@@ -205,7 +205,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_MessageIsNull_WhenPrepareSendReturnsNull()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddNullPrepareSend();
 
             var message = new Message(AgentConsts.Roles.Assistant, "prompt text");
@@ -217,7 +217,7 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task Agent_MessageIsNull_WhenPrepareReceiveReturnsNull()
         {
-            var mockAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var mockAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddNullPrepareReceive();
             var message = new Message(AgentConsts.Roles.User, "prompt text");
 

@@ -1,46 +1,46 @@
-﻿using System;
+﻿using BAIsic.Interlocutor;
+using BAIsic.LlmApi.Ollama;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BAIsic.Interlocutor;
-using BAIsic.LlmApi.Ollama;
-using BAIsic.LlmApi.Ollama.Tests;
-using static BAIsic.LlmApi.Ollama.Tests.OllamaTestConsts;
 
-namespace BAIsic.AgentWithOllama.Tests
+namespace BAIsic.Interlocutor.Ollama
 {
-    public class OllamaAgent : Agent
+    public class OllamaGenerateReplyHandler
     {
         private readonly OllamaClient _ollamaClient;
         private readonly string _model;
+        private readonly RequestOptions? _requestOptions;
 
-        public OllamaAgent(string name, string model, string? systemPrompt = null) : base(name, systemPrompt)
+        public OllamaGenerateReplyHandler(string model, OllamaClient ollamaClient, RequestOptions? requestOptions = null)
         {
-            _ollamaClient = OllamaClientExtensions.CreateOllamaClient();
+            _ollamaClient = ollamaClient;
             _model = model;
-
-            _generateReplyHandlers.Add(GenerateReplyHandlerAsync);
+            _requestOptions = requestOptions;
         }
 
-        private async Task<(bool isDone, BAIsic.Interlocutor.Message? message)> GenerateReplyHandlerAsync(IEnumerable<BAIsic.Interlocutor.Message> messages)
+        public OllamaGenerateReplyHandler(string model, HttpClient httpClient, RequestOptions? requestOptions = null) : this(model, new OllamaClient(httpClient), requestOptions)
+        {
+
+        }
+
+
+        public async Task<(bool isDone, BAIsic.Interlocutor.Message? message)> GenerateReplyHandlerAsync(IEnumerable<BAIsic.Interlocutor.Message> messages)
         {
             IList<LlmApi.Ollama.Message> ollamaMessages = messages.Select(m => new LlmApi.Ollama.Message
             {
-                Role = m.Role, 
+                Role = m.Role,
                 Content = m.Text,
             }).ToList();
-
 
             var chatRequest = new ChatRequest()
             {
                 Model = _model,
-                Stream = true,
-                Options = new RequestOptions()
-                {
-                    Temperature = 0.4f,
-                    TopP = 0.4f,
-                },
+                Stream = false,
+                Options = _requestOptions,
+                KeepAlive = -1,
                 Messages = ollamaMessages
             };
 
@@ -50,8 +50,9 @@ namespace BAIsic.AgentWithOllama.Tests
             {
                 return (true, null);
             }
-            
+
             return (true, new BAIsic.Interlocutor.Message(AgentConsts.Roles.Assistant, chatResponse.Message.Content));
         }
     }
 }
+

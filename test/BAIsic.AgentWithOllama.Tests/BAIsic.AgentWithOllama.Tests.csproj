@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\BAIsic.Interlocutor.Ollama\BAIsic.Interlocutor.Ollama.csproj" />
     <ProjectReference Include="..\..\src\BAIsic.Interlocutor\BAIsic.Interlocutor.csproj" />
     <ProjectReference Include="..\..\src\BAIsic.LlmApi.Ollama\BAIsic.LlmApi.Ollama.csproj" />
     <ProjectReference Include="..\BAIsic.Interlocutor.Tests\BAIsic.Interlocutor.Tests.csproj" />

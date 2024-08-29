@@ -13,9 +13,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_ExecutesOneTurn_WhenCalledWithDefaultTurn()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("participant");
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello");
@@ -35,9 +35,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_HasSystemMessage_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are a helpful assistant")
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are a helpful assistant")
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "the assistant is helpful")
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName(), "the assistant is helpful")
                 .AddHugGenerateReply("participant");
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello");
@@ -60,9 +60,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_ExecutesThreeTurns_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("participant");
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello");
@@ -89,10 +89,10 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateInitiatorSendPrepare_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddNullPrepareSend()
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("participant");
             var initialMessage = new Message(AgentConsts.Roles.User, "hello");
             var conversation = new DialogueConversation();
@@ -112,9 +112,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateInitiatorSend_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, "goodbye");
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
@@ -142,9 +142,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateParticipantReceivePrepare_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddNullPrepareReceive()
                 .AddLiteralGenerateReply(true, "goodbye");
 
@@ -168,9 +168,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateParticipantGenerateReply_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, null);
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
@@ -193,9 +193,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateParticipantSendPrepare_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddNullPrepareSend()
                 .AddLiteralGenerateReply(true, "goodbye");
 
@@ -219,10 +219,10 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateInitiatorReceivePrepare_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddNullPrepareReceive()
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, "goodbye");
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
@@ -245,9 +245,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateInitiatorGenerateReply_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, null);
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, "goodbye");
 
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
@@ -270,9 +270,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateParticipantSendCheckingBool_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, "goodbye");
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
             var conversation = new DialogueConversation();
@@ -307,9 +307,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateInitiatorSendCheckingBool_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, "goodbye");
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");
             var conversation = new DialogueConversation();
@@ -342,9 +342,9 @@ namespace BAIsic.Interlocutor.Tests
         public async Task DialogConversation_TerminateParticipantSendCheckingAgent_WhenCalled()
         {
             // Arrange
-            var initiatorAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var initiatorAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("initiator");
-            var participantAgent = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var participantAgent = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddLiteralGenerateReply(true, "goodbye")
                 .AddHugGenerateReply("participant");
             var initialMessage = new Message(AgentConsts.Roles.User, "hello and goodbye");

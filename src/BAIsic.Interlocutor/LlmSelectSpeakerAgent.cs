@@ -14,7 +14,7 @@ namespace BAIsic.Interlocutor
         public LlmSelectSpeakerAgent(string name, LlmSelectSpeakerAgentConfig config) : base(name, null)
         {
             _config = config;
-            _checkSelectSpeakerAgent = new LlmCheckSelectSpeakerAgent("check_name", _config.NoneSelectedPrompt);
+            _checkSelectSpeakerAgent = new LlmCheckSelectSpeakerAgent("check_name", _config.NoneSelectedPrompt, _config.ManySelectedPrompt);
         }
 
         public ICheckSelectSpeakerAgent CheckSelectSpeakerAgent => _checkSelectSpeakerAgent;

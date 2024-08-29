@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BAIsic.Interlocutor.Tests
 {
-    public class MockCheckSelectSpeakerAgent : MockAgent, ICheckSelectSpeakerAgent
+    public class MockCheckSelectSpeakerAgent : Agent, ICheckSelectSpeakerAgent
     {
 
         private IList<IConversableAgent>? _agents;

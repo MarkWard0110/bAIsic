@@ -23,5 +23,6 @@ The names are case-sensitive and should not be abbreviated or changed.
 The only names that are accepted are {agentlist}.
 Respond with ONLY the name of the speaker and DO NOT provide a reason.";
 
+        public string ManySelectedPrompt { get; set; } = string.Empty;
     }
 }

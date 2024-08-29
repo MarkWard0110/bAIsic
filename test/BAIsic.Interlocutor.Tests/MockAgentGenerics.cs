@@ -8,30 +8,7 @@ namespace BAIsic.Interlocutor.Tests
 {
     public static class MockAgentBuilderGenerics
     {
-        public static MockAgent AddStringLiteralGenerateReply(this MockAgent agent, string reply)
-        {
-            agent.GenerateReplyHandlers.Add( (messages) =>
-            {
-                return Task.FromResult<(bool, Message?)>((true, new Message(AgentConsts.Roles.Assistant, reply)));
-            });
-            return agent;
-        }
-
-        public static MockAgent AddLiteralGenerateReply(this MockAgent agent,bool isDone, string? reply)
-        {
-            agent.GenerateReplyHandlers.Add((messages) =>
-            {
-                if (reply == null)
-                {
-                    return Task.FromResult<(bool, Message?)>((isDone, null));
-                }
-
-                return Task.FromResult<(bool, Message?)>((isDone, new Message(AgentConsts.Roles.Assistant, reply)));
-            });
-            return agent;
-        }
-
-        public static MockAgent AddHugGenerateReply(this MockAgent agent, string hugName)
+        public static Agent AddHugGenerateReply(this Agent agent, string hugName)
         {
             agent.GenerateReplyHandlers.Add((messages) =>
             {
@@ -41,7 +18,7 @@ namespace BAIsic.Interlocutor.Tests
             return agent;
         }
 
-        public static MockAgent AddToUpperPrepareSend(this MockAgent agent)
+        public static Agent AddToUpperPrepareSend(this Agent agent)
         {
             agent.PrepareSendHandlers.Add((message) =>
             {
@@ -54,7 +31,7 @@ namespace BAIsic.Interlocutor.Tests
             return agent;
         }
 
-        public static MockAgent AddToLowerPrepareSend(this MockAgent agent)
+        public static Agent AddToLowerPrepareSend(this Agent agent)
         {
             agent.PrepareSendHandlers.Add((message) =>
             {
@@ -67,7 +44,7 @@ namespace BAIsic.Interlocutor.Tests
             return agent;
         }
 
-        public static MockAgent AddToUpperPrepareReceive(this MockAgent agent)
+        public static Agent AddToUpperPrepareReceive(this Agent agent)
         {
             agent.PrepareReceiveHandlers.Add((message) =>
             {
@@ -80,7 +57,7 @@ namespace BAIsic.Interlocutor.Tests
             return agent;
         }
 
-        public static MockAgent AddToLowerPrepareReceive(this MockAgent agent)
+        public static Agent AddToLowerPrepareReceive(this Agent agent)
         {
             agent.PrepareReceiveHandlers.Add((message) =>
             {
@@ -93,7 +70,7 @@ namespace BAIsic.Interlocutor.Tests
             return agent;
         }
 
-        public static MockAgent AddNullPrepareSend(this MockAgent agent)
+        public static Agent AddNullPrepareSend(this Agent agent)
         {
             agent.PrepareSendHandlers.Add((message) =>
             {
@@ -102,7 +79,7 @@ namespace BAIsic.Interlocutor.Tests
             return agent;
         }
 
-        public static MockAgent AddNullPrepareReceive(this MockAgent agent)
+        public static Agent AddNullPrepareReceive(this Agent agent)
         {
             agent.PrepareReceiveHandlers.Add((message) =>
             {

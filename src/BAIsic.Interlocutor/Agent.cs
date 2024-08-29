@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BAIsic.Interlocutor
 {
-    public abstract class Agent : IAgent
+    public class Agent : IAgent
     {
         protected string? _systemPrompt = null;
         protected readonly string _name;

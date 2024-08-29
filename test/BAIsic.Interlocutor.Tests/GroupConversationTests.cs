@@ -13,11 +13,11 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task GroupConversation_DefaultTransition_WhenInitiateChat()
         {
-            var agentOne = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var agentOne = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("agentOne");
-            var agentTwo = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var agentTwo = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("agentTwo");
-            var agentThree = new MockAgent(BAIsicTestConventions.Agent.RandomName())
+            var agentThree = new Agent(BAIsicTestConventions.Agent.RandomName())
                 .AddHugGenerateReply("agentThree");
 
             var converableAgentOne = new GenericConversableAgent(agentOne, "agent one");
@@ -58,11 +58,11 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task GroupConversation_SystemPromptInitialized_WhenInitiateChat()
         {
-            var agentOne = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are agent one")
+            var agentOne = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are agent one")
                 .AddHugGenerateReply("agentOne");
-            var agentTwo = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are agent two")
+            var agentTwo = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are agent two")
                 .AddHugGenerateReply("agentTwo");
-            var agentThree = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are agent three")
+            var agentThree = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are agent three")
                 .AddHugGenerateReply("agentThree");
 
             var converableAgentOne = new GenericConversableAgent(agentOne, "agent one");
@@ -91,11 +91,11 @@ namespace BAIsic.Interlocutor.Tests
         [Fact]
         public async Task GroupConversation_MaxTurnCount_WhenInitiateChat()
         {
-            var agentOne = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are agent one")
+            var agentOne = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are agent one")
                 .AddHugGenerateReply("agentOne");
-            var agentTwo = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are agent two")
+            var agentTwo = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are agent two")
                 .AddHugGenerateReply("agentTwo");
-            var agentThree = new MockAgent(BAIsicTestConventions.Agent.RandomName(), "you are agent three")
+            var agentThree = new Agent(BAIsicTestConventions.Agent.RandomName(), "you are agent three")
                 .AddHugGenerateReply("agentThree");
 
             var converableAgentOne = new GenericConversableAgent(agentOne, "agent one");

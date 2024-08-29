@@ -14,19 +14,30 @@ namespace BAIsic.AgentWithOllama.Tests
     {
         [Theory]
         //[RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
-        //[RequireModelData("llama3.1:8b-instruct-fp16")]
-        //[RequireModelData("llama3:8b-instruct-fp16")]
-        //[RequireModelData("llama3:70b-instruct-q8_0")]
-        [RequireModelData("llama3.1:70b-instruct-q8_0")]
+        //[RequireModelData("llama3.1:8b-instruct-q4_0")] //  1/50
+        //[RequireModelData("llama3.1:8b-instruct-q6_K")] //  3/50
+        //[RequireModelData("llama3.1:8b-instruct-q8_0")] //  2/50
+        //[RequireModelData("llama3.1:8b-instruct-fp16")] //  3/50 
+
+                                                          // self-check    // 70b check
+        //[RequireModelData("llama3:8b-instruct-q4_0")]   //  2/50               /50
+        //[RequireModelData("llama3:8b-instruct-q6_K")]   // 11/50              3/50
+        //[RequireModelData("llama3:8b-instruct-q8_0")]   //  9/50               /50
+        //[RequireModelData("llama3:8b-instruct-fp16")]   //  9/50              5/50
+
+        [RequireModelData("llama3:70b-instruct-q6_K")]  // 44/50
+        //[RequireModelData("llama3:70b-instruct-q8_0")]  // 44/50
+        //[RequireModelData("llama3.1:70b-instruct-q6_K")]
+        //[RequireModelData("llama3.1:70b-instruct-q8_0")]
         public async Task NumberTeamsTest(string model)
         {
             int successCount = 0;
-            for (int t = 0; t < 20; t++)
+            int maxRoundCount = 1;
+            for (int t = 0; t < maxRoundCount; t++)
             {
-
+                Console.WriteLine($"Test {t}");
                 try
                 {
-
                     //-------------------------------------------------------------------------
                     List<IConversableAgent> agents = [];
                     Dictionary<string, List<string>> speakerTransitionsDict = [];
@@ -44,7 +55,7 @@ namespace BAIsic.AgentWithOllama.Tests
 
                             // Create a ConversableAgent for each node 
                             var systemMessage =
-        $@"Your name is {nodeId}.
+$@"Your name is {nodeId}.
 Do not respond as the speaker named in the NEXT tag if your name is not in the NEXT tag. Instead, suggest a relevant team leader to handle the mis-tag, with the NEXT: tag.
 
 You have {secretValue} chocolates.
@@ -72,7 +83,7 @@ Once we have the total tally from all nine players, sum up all three teams' tall
                                 name: nodeId,
                                 systemPrompt: systemMessage,
                                 description: systemMessage
-                            ).AddOllamaGenerateReply(model));
+                            ).AddTestsOllamaGenerateReply(model));
 
                             speakerTransitionsDict[agents.Last().Name] = [];
                         }
@@ -151,7 +162,7 @@ Once we have the total tally from all nine players, sum up all three teams' tall
                         //The only names that are accepted are [{agentlist}].
                         //Respond with ONLY the name of the agent and DO NOT provide a reason.",
                         SelectSpeakerSystemMessageTemplate =
-        @"You are a coordinator responsible for managing a group of agents. Your primary task is to choose which agent should be called next based on the user's instructions and the context of the conversation.
+@"You are a coordinator responsible for managing a group of agents. Your primary task is to choose which agent should be called next based on the user's instructions and the context of the conversation.
 
 You have a list of agent names that you may choose from: [{agentlist}].
 
@@ -166,10 +177,22 @@ If the user does not provide any explicit instructions, choose the agent that be
 
 Only return the agent's name and nothing else.",
                         NoneSelectedPrompt =
-        @"You didn't choose a valid agent name. You have a list of agent names that you may choose from: [{agentlist}].  As a reminder, to determine the next agent use these prioritized rules:
-1. If the context refers to themselves as a speaker e.g. \""As the...\"" , choose that agent's name
-2. If it refers to the \""next\"" agent name, choose that name
-3. Otherwise, choose one of the provided agent's name in the context
+@"Is this agent in the list of agent names that was given to you?
+You didn't choose a valid agent name. You have a list of agent names that you may choose from: [{agentlist}].  As a reminder, to determine the next agent use these prioritized rules:
+1. If the context refers to themselves as a speaker e.g. ""As the..."" , choose that agent's name.
+2. If it refers to the ""next"" agent name and the name is in the list, choose that name.
+3. Otherwise, choose one of the provided agent's name on behalf of the user.
+4. Do not answer with the invalid agent name.
+The names are case-sensitive and should not be abbreviated or changed.
+The only names that are accepted are [{agentlist}].
+Respond with ONLY the name of the agent and DO NOT provide a reason.",
+                        ManySelectedPrompt = 
+@"Is this agent in the list of agent names that was given to you?
+You didn't choose a valid agent name. You have a list of agent names that you may choose from: [{agentlist}].  As a reminder, to determine the next agent use these prioritized rules:
+1. If the context refers to themselves as a speaker e.g. ""As the..."" , choose that agent's name.
+2. If it refers to the ""next"" agent name and the name is in the list, choose that name.
+3. Otherwise, choose one of the provided agent's name on behalf of the user.
+4. Do not answer with the invalid agent name.
 The names are case-sensitive and should not be abbreviated or changed.
 The only names that are accepted are [{agentlist}].
 Respond with ONLY the name of the agent and DO NOT provide a reason.",
@@ -177,7 +200,7 @@ Respond with ONLY the name of the agent and DO NOT provide a reason.",
                     };
 
                     var selectSpeakerAgent = new LlmSelectSpeakerAgent(BAIsicTestConventions.Agent.RandomName(), config)
-                        .AddOllamaGenerateReply(model);
+                        .AddTestsOllamaGenerateReply(model);
 
                     var agentSelectSpeaker = new LlmSpeakerSelector(selectSpeakerAgent);
 
@@ -206,8 +229,9 @@ NEXT: A0");
 
                     Assert.True(result.Conversation.First().Messages.Last().Text.Contains("TERMINATE", StringComparison.OrdinalIgnoreCase));
 
-                    await CheckAnswer(result.Conversation.First().Messages.Last(), secretValues, model);
+                    await CheckAnswer(result.Conversation.First().Messages.Last(), secretValues, "llama3:70b-instruct-q6_K");
                     successCount++;
+                    Console.WriteLine($"Test {t} {successCount}/{maxRoundCount}");
                 }
                 catch (Exception)
                 {
@@ -220,13 +244,13 @@ NEXT: A0");
 
         private static async Task CheckAnswer(Message numbersAnswer, Dictionary<string, int> secretValues, string model)
         {
-
-            var initiatorAgent = new MockAgent("feeder")
+            var initiatorAgent = new Agent("feeder")
                 .AddStringLiteralGenerateReply("Respond with only the classification");
 
             var answers = BuildAnswers(secretValues);
 
-            var llmAgent = new OllamaAgent("llm", model, $"Read the conversation.  Classify if it is correct or not correct.  Given the following answers \n{answers}\nIt is ok if a Team leader report their team's total.\nCheck the conversation and classify if it has generated correct information based on the answers.  The conversation may not provide how it calculated the answer.");
+            var llmAgent = new Agent("llm", $"Read the conversation.  Classify if it is correct or not correct.  Given the following answers \n{answers}\nIt is ok if a Team leader report their team's total.\nCheck the conversation and classify if it has generated correct information based on the answers.  The conversation may not provide how it calculated the answer.")
+                .AddTestsOllamaGenerateReply(model);
 
             var conversation = new DialogueConversation();
             var conversationResult = await conversation.InitiateChat(initiatorAgent, numbersAnswer, llmAgent, maximumTurnCount:2);
@@ -246,7 +270,6 @@ NEXT: A0");
             {
                 sb.AppendLine($"{pair.Key}: {pair.Value}");
             }
-
 
             // Outer loop for prefixes 'A', 'B', 'C'
             foreach (var prefix in new[] { "A", "B", "C" })

@@ -11,11 +11,13 @@ namespace BAIsic.Interlocutor
     {
 
         private readonly string _noneTemplate;
+        private readonly string _manyTemplate;
         private IList<IConversableAgent>? _agents = null;
-        public LlmCheckSelectSpeakerAgent(string name, string noneTemplate) : base(name, null)
+        public LlmCheckSelectSpeakerAgent(string name, string noneTemplate, string manyTemplate) : base(name, null)
         {
             _generateReplyHandlers.Add(GenerateReplyHandlerAsync);
             _noneTemplate = noneTemplate;
+            _manyTemplate = manyTemplate;
         }
 
         public IList<IConversableAgent>? Agents { get => _agents; set => _agents = value; }
@@ -52,6 +54,13 @@ namespace BAIsic.Interlocutor
                 var message = new Message(AgentConsts.Roles.Assistant, _noneTemplate.Replace("{agentlist}", agentList));
                 return (true, message);
             }
+            else 
+            {
+                var agentList = GetAgentList(_agents);
+                var message = new Message(AgentConsts.Roles.Assistant, _manyTemplate.Replace("{agentlist}", agentList));
+                return (true, message);
+            }
+
             throw new NotImplementedException();
         }
 

@@ -11,8 +11,10 @@ namespace BAIsic.AgentWithOllama.Tests
         [RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
         public async Task DialogueConveration_OneTurn_WhenCalled(string model)
         {
-            var initiatorAgent = new OllamaAgent("initiator", model, "Your name is Cathy and you are a part of a duo of comedians.");
-            var participantAgent = new OllamaAgent("participant", model, "Your name is Joe and you are a part of a duo of comedians.");
+            var initiatorAgent = new Agent("initiator", "Your name is Cathy and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
+            var participantAgent = new Agent("participant", "Your name is Joe and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
 
             var initialMessage = new Message(AgentConsts.Roles.User, "Cathy, tell me a joke.");
             var conversation = new DialogueConversation();
@@ -24,8 +26,10 @@ namespace BAIsic.AgentWithOllama.Tests
         [RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
         public async Task DialogueConveration_TwoTurn_WhenCalled(string model)
         {
-            var initiatorAgent = new OllamaAgent("initiator", model, "Your name is Cathy and you are a part of a duo of comedians.");
-            var participantAgent = new OllamaAgent("participant", model, "Your name is Joe and you are a part of a duo of comedians.");
+            var initiatorAgent = new Agent("initiator", "Your name is Cathy and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
+            var participantAgent = new Agent("participant", "Your name is Joe and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
 
             var initialMessage = new Message(AgentConsts.Roles.User, "Cathy, tell me a joke.");
             var conversation = new DialogueConversation();
@@ -37,8 +41,10 @@ namespace BAIsic.AgentWithOllama.Tests
         [RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
         public async Task DialogueConveration_ThreeTurn_WhenCalled(string model)
         {
-            var initiatorAgent = new OllamaAgent("initiator", model, "Your name is Cathy and you are a part of a duo of comedians.");
-            var participantAgent = new OllamaAgent("participant", model, "Your name is Joe and you are a part of a duo of comedians.");
+            var initiatorAgent = new Agent("initiator", "Your name is Cathy and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
+            var participantAgent = new Agent("participant", "Your name is Joe and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
 
             var initialMessage = new Message(AgentConsts.Roles.User, "Cathy, tell me a joke.");
             var conversation = new DialogueConversation();
@@ -50,8 +56,10 @@ namespace BAIsic.AgentWithOllama.Tests
         [RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
         public async Task DialogueConveration_GoodbyeTerminate_WhenCalled(string model)
         {
-            var initiatorAgent = new OllamaAgent("initiator", model, "Your name is Cathy and you are a part of a duo of comedians.");
-            var participantAgent = new OllamaAgent("participant", model, "Your name is Joe and you are a part of a duo of comedians.");
+            var initiatorAgent = new Agent("initiator", "Your name is Cathy and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
+            var participantAgent = new Agent("participant", "Your name is Joe and you are a part of a duo of comedians.")
+                .AddTestsOllamaGenerateReply(model);
 
             var initialMessage = new Message(AgentConsts.Roles.User, "Cathy, tell me a joke and then say the words goodbye.");
             
