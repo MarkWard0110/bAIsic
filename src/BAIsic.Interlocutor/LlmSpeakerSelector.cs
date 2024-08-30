@@ -16,7 +16,7 @@ namespace BAIsic.Interlocutor
             _checkSelectSpeakerAgent = _selectSpeakerAgent.CheckSelectSpeakerAgent;
         }
 
-        public async Task<IConversableAgent> SelectSpeakerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
+        public async Task<IConversableAgent?> SelectSpeakerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
         {
             var initialMessages = _selectSpeakerAgent.InitialMessages(speaker, message, agents, allowedTransitions);
             var initialChatMessage = _selectSpeakerAgent.InitialChatMessage(speaker, message, agents, allowedTransitions);
@@ -34,7 +34,7 @@ namespace BAIsic.Interlocutor
             return GetSpeaker(result.Conversation[0].Messages.Last(), agents);
         }
 
-        private IConversableAgent GetSpeaker(Message message, IList<IConversableAgent> agents)
+        private IConversableAgent? GetSpeaker(Message message, IList<IConversableAgent> agents)
         {
             if (message.Text.Contains(GroupConversationConsts.AgentSelected))
             {
@@ -43,7 +43,7 @@ namespace BAIsic.Interlocutor
             }
             else
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
     }

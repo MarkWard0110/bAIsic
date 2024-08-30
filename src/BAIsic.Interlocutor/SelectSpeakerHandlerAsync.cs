@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace BAIsic.Interlocutor
 {
-    public delegate Task<IConversableAgent> SelectSpeakerHandlerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions);
+    public delegate Task<IConversableAgent?> SelectSpeakerHandlerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions);
 }

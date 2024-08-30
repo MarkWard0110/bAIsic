@@ -112,6 +112,12 @@ namespace BAIsic.Interlocutor
                 // select next speaker
                 speaker = await _selectSpeakerHandler(speaker, speakerSendMessage, _agents, allowedTransitions: _allowedTransitions);
 
+                if (speaker == null)
+                {
+                    // terminate conversation (select speaker is null)
+                    break;
+                }
+
                 // speaker generates reply
                 var speakerGenerateReply = await speaker.GenerateReplyAsync(agentMessages[speaker.Name]);
                 if (speakerGenerateReply == null)

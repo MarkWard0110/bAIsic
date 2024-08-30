@@ -205,9 +205,9 @@ Respond with ONLY the name of the agent and DO NOT provide a reason.",
                     var agentSelectSpeaker = new LlmSpeakerSelector(selectSpeakerAgent);
 
 
-                    static async Task<bool> Terminate(bool isInitialMessage, IAgent agent, Message message)
+                    static Task<bool> Terminate(bool isInitialMessage, IAgent agent, Message message)
                     {
-                        return message.Text.Contains("TERMINATE", StringComparison.OrdinalIgnoreCase);
+                        return Task.FromResult(message.Text.Contains("TERMINATE", StringComparison.OrdinalIgnoreCase));
                     }
 
                     var initiatorAgent = new ConversableAgent(BAIsicTestConventions.Agent.RandomName(), "Conversation initiator");
