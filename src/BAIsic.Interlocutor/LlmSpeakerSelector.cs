@@ -10,10 +10,13 @@ namespace BAIsic.Interlocutor
     {
         private readonly ISelectSpeakerAgent _selectSpeakerAgent;
         private readonly ICheckSelectSpeakerAgent _checkSelectSpeakerAgent;
-        public LlmSpeakerSelector(ISelectSpeakerAgent selectSpeakerAgent)
+        private readonly int _maximumTurnCount;
+
+        public LlmSpeakerSelector(ISelectSpeakerAgent selectSpeakerAgent, int maximumTurnCount=5)
         {
             _selectSpeakerAgent = selectSpeakerAgent;
             _checkSelectSpeakerAgent = _selectSpeakerAgent.CheckSelectSpeakerAgent;
+            _maximumTurnCount = maximumTurnCount;
         }
 
         public async Task<IConversableAgent?> SelectSpeakerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
@@ -28,7 +31,7 @@ namespace BAIsic.Interlocutor
                 initialChatMessage, 
                 _selectSpeakerAgent, 
                 terminateHandler: _checkSelectSpeakerAgent.ConversationTerminateHandlerAsync, 
-                maximumTurnCount: 5,
+                maximumTurnCount: _maximumTurnCount,
                 participantInitMessages: initialMessages);
 
             return GetSpeaker(result.Conversation[0].Messages.Last(), agents);
