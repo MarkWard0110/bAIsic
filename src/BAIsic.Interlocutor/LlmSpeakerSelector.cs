@@ -19,7 +19,7 @@ namespace BAIsic.Interlocutor
             _maximumTurnCount = maximumTurnCount;
         }
 
-        public async Task<IConversableAgent?> SelectSpeakerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
+        public async Task<(IConversableAgent? Speaker, ConversationResult? SelectSpeakerConversationResult)> SelectSpeakerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
         {
             var initialMessages = _selectSpeakerAgent.InitialMessages(speaker, message, agents, allowedTransitions);
             var initialChatMessage = _selectSpeakerAgent.InitialChatMessage(speaker, message, agents, allowedTransitions);
@@ -34,7 +34,7 @@ namespace BAIsic.Interlocutor
                 maximumTurnCount: _maximumTurnCount,
                 participantInitMessages: initialMessages);
 
-            return GetSpeaker(result.Conversation[0].Messages.Last(), agents);
+            return (GetSpeaker(result.Conversation[0].Messages.Last(), agents), result);
         }
 
         private IConversableAgent? GetSpeaker(Message message, IList<IConversableAgent> agents)

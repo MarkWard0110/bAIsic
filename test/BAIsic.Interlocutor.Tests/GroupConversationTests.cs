@@ -26,7 +26,7 @@ namespace BAIsic.Interlocutor.Tests
 
             List<IConversableAgent> agents = [converableAgentOne, converableAgentTwo, converableAgentThree];
 
-            Task<IConversableAgent?> SelectSpeakerHandlerWithTestAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
+            Task<(IConversableAgent? Speaker, ConversationResult? SelectSpeakerConversationResult)> SelectSpeakerHandlerWithTestAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
             {
                 Assert.Equal(3, agents.Count);
                 Assert.Equal(3, allowedTransitions.Count);
@@ -45,13 +45,14 @@ namespace BAIsic.Interlocutor.Tests
             var result = await groupConversation.InitiateChatAsync(converableAgentOne, initialMessage);
 
             Assert.NotNull(result);
-            Assert.Equal(1, result.TurnCount);
-            Assert.NotNull(result.Conversation);
-            Assert.Equal(3, result.Conversation.Count);
-            for (int i = 0; i < result.Conversation.Count; i++)
+            Assert.NotNull(result);
+            Assert.Equal(1, result[0].TurnCount);
+            Assert.NotNull(result[0].Conversation);
+            Assert.Equal(3, result[0].Conversation.Count);
+            for (int i = 0; i < result[0].Conversation.Count; i++)
             {
-                Assert.NotNull(result.Conversation[i]);
-                Assert.Equal(2, result.Conversation[i].Messages.Count);
+                Assert.NotNull(result[0].Conversation[i]);
+                Assert.Equal(2, result[0].Conversation[i].Messages.Count);
             }
         }
 
@@ -78,13 +79,14 @@ namespace BAIsic.Interlocutor.Tests
             var result = await groupConversation.InitiateChatAsync(converableAgentOne, initialMessage);
 
             Assert.NotNull(result);
-            Assert.Equal(1, result.TurnCount);
-            Assert.NotNull(result.Conversation);
-            Assert.Equal(3, result.Conversation.Count);
-            for (int i = 0; i < result.Conversation.Count; i++)
+            Assert.NotNull(result[0]);
+            Assert.Equal(1, result[0].TurnCount);
+            Assert.NotNull(result[0].Conversation);
+            Assert.Equal(3, result[0].Conversation.Count);
+            for (int i = 0; i < result[0].Conversation.Count; i++)
             {
-                Assert.NotNull(result.Conversation[i]);
-                Assert.Equal(3, result.Conversation[i].Messages.Count);
+                Assert.NotNull(result[0].Conversation[i]);
+                Assert.Equal(3, result[0].Conversation[i].Messages.Count);
             }
         }
 
@@ -111,13 +113,14 @@ namespace BAIsic.Interlocutor.Tests
             var result = await groupConversation.InitiateChatAsync(converableAgentOne, initialMessage);
 
             Assert.NotNull(result);
-            Assert.Equal(3, result.TurnCount);
-            Assert.NotNull(result.Conversation);
-            Assert.Equal(3, result.Conversation.Count);
-            for (int i = 0; i < result.Conversation.Count; i++)
+            Assert.NotNull(result[0]);
+            Assert.Equal(3, result[0].TurnCount);
+            Assert.NotNull(result[0].Conversation);
+            Assert.Equal(3, result[0].Conversation.Count);
+            for (int i = 0; i < result[0].Conversation.Count; i++)
             {
-                Assert.NotNull(result.Conversation[i]);
-                Assert.Equal(5, result.Conversation[i].Messages.Count);
+                Assert.NotNull(result[0].Conversation[i]);
+                Assert.Equal(5, result[0].Conversation[i].Messages.Count);
             }
         }
 
@@ -138,11 +141,11 @@ namespace BAIsic.Interlocutor.Tests
             List<IConversableAgent> agents = [converableAgentOne, converableAgentTwo, converableAgentThree];
 
 
-            Task<IConversableAgent?> SelectSpeakerHandlerWithTestAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
+            Task<(IConversableAgent? Speaker, ConversationResult? SelectSpeakerConversationResult)> SelectSpeakerHandlerWithTestAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
             {
                 if (ReferenceEquals(speaker, converableAgentTwo))
                 {
-                    return Task.FromResult<IConversableAgent?>(null);
+                    return Task.FromResult<(IConversableAgent? Speaker, ConversationResult? SelectSpeakerConversationResult)>((null, null));
                 }
 
                 return SelectSpeakerHandlerAsync(speaker, message, agents, allowedTransitions);
@@ -155,22 +158,23 @@ namespace BAIsic.Interlocutor.Tests
             var result = await groupConversation.InitiateChatAsync(converableAgentOne, initialMessage);
 
             Assert.NotNull(result);
-            Assert.Equal(1, result.TurnCount);
-            Assert.NotNull(result.Conversation);
-            Assert.Equal(3, result.Conversation.Count);
-            for (int i = 0; i < result.Conversation.Count; i++)
+            Assert.NotNull(result[0]);
+            Assert.Equal(1, result[0].TurnCount);
+            Assert.NotNull(result[0].Conversation);
+            Assert.Equal(3, result[0].Conversation.Count);
+            for (int i = 0; i < result[0].Conversation.Count; i++)
             {
-                Assert.NotNull(result.Conversation[i]);
-                Assert.Equal(3, result.Conversation[i].Messages.Count);
+                Assert.NotNull(result[0].Conversation[i]);
+                Assert.Equal(3, result[0].Conversation[i].Messages.Count);
             }
         }
 
 
-        public static Task<IConversableAgent?> SelectSpeakerHandlerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
+        public static Task<(IConversableAgent? Speaker, ConversationResult? SelectSpeakerConversationResult)> SelectSpeakerHandlerAsync(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
         {
                 int currentIndex = agents.IndexOf(speaker);
                 int nextIndex = (currentIndex + 1) % agents.Count;
-                return Task.FromResult<IConversableAgent?>(agents[nextIndex]);
+                return Task.FromResult<(IConversableAgent? Speaker, ConversationResult? SelectSpeakerConversationResult)>((agents[nextIndex], null));
         }
     }
 }

@@ -35,7 +35,7 @@ namespace BAIsic.Interlocutor
             }
         }
 
-        public async Task<ConversationResult> InitiateChatAsync(IConversableAgent initiator, Message initialMessage)
+        public async Task<List<ConversationResult>> InitiateChatAsync(IConversableAgent initiator, Message initialMessage)
         {
             Dictionary<string, List<Message>> agentMessages = [];
 
@@ -53,6 +53,7 @@ namespace BAIsic.Interlocutor
             var speaker = initiator;
             var groupMessage = initialMessage;
             var turnCount = 0;
+            List<ConversationResult> selectSpeakerConversationResults = [];
 
             while (true)
             {
@@ -110,13 +111,20 @@ namespace BAIsic.Interlocutor
                 }
 
                 // select next speaker
-                speaker = await _selectSpeakerHandler(speaker, speakerSendMessage, _agents, allowedTransitions: _allowedTransitions);
+                var selectSpeaker = await _selectSpeakerHandler(speaker, speakerSendMessage, _agents, allowedTransitions: _allowedTransitions);
 
-                if (speaker == null)
+                if (selectSpeaker.SelectSpeakerConversationResult != null)
+                {
+                    selectSpeakerConversationResults.Add(selectSpeaker.SelectSpeakerConversationResult);
+                }
+
+                if (selectSpeaker.Speaker == null)
                 {
                     // terminate conversation (select speaker is null)
                     break;
                 }
+
+                speaker = selectSpeaker.Speaker;
 
                 // speaker generates reply
                 var speakerGenerateReply = await speaker.GenerateReplyAsync(agentMessages[speaker.Name]);
@@ -138,7 +146,13 @@ namespace BAIsic.Interlocutor
                 conversationHistories.Add(new ConversationHistory(agent, [.. agentMessages[agent.Name]]));
             }
 
-            return new ConversationResult([.. conversationHistories], turnCount);
+            List<ConversationResult> results =
+            [
+                new ConversationResult([.. conversationHistories], turnCount),
+                .. selectSpeakerConversationResults,
+            ];
+
+            return results;
         }
     }
 }

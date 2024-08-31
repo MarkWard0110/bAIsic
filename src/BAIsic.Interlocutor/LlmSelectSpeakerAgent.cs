@@ -21,21 +21,38 @@ namespace BAIsic.Interlocutor
 
         public Message InitialChatMessage(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
         {
-            var agentTransitions = GetTransitions(agents, allowedTransitions[speaker.Name]);
-            var agentList = GetAgentList(agentTransitions);
-            return new Message(AgentConsts.Roles.User, GetSelectPromptMessage(agentList));
+            if (string.IsNullOrEmpty(_config.SelectSpeakerPrompt))
+            {
+                var chatMessage = message.Role == AgentConsts.Roles.User ? message : message with { Role = AgentConsts.Roles.User };
+                return chatMessage;
+            }
+            else
+            {
+                var agentTransitions = GetTransitions(agents, allowedTransitions[speaker.Name]);
+                var agentList = GetAgentList(agentTransitions);
+                return new Message(AgentConsts.Roles.User, GetSelectPromptMessage(agentList));
+            }
         }
 
         public IEnumerable<Message> InitialMessages(IConversableAgent speaker, Message message, IList<IConversableAgent> agents, IDictionary<string, List<string>> allowedTransitions)
         {
             var agentTransitions = GetTransitions(agents, allowedTransitions[speaker.Name]);
+            _checkSelectSpeakerAgent.Agents = agentTransitions;
+
             var roles = GetRoles(agentTransitions);
             var agentList = GetAgentList(agentTransitions);
             var systemMessage = AgentConventions.SystemMessage(GetSystemMessage(roles, agentList));
 
-            var chatMessage = message.Role == AgentConsts.Roles.User ? message: message with { Role = AgentConsts.Roles.User };
-            _checkSelectSpeakerAgent.Agents = agentTransitions;
-            return [systemMessage, chatMessage];
+            if (string.IsNullOrEmpty(_config.SelectSpeakerPrompt))
+            {
+                return [systemMessage];
+            }
+            else
+            {
+                var chatMessage = message.Role == AgentConsts.Roles.User ? message : message with { Role = AgentConsts.Roles.User };
+
+                return [systemMessage, chatMessage];
+            }
         }
 
         private string GetSystemMessage(string roles, string agentList)
@@ -54,7 +71,8 @@ namespace BAIsic.Interlocutor
         private IList<IConversableAgent> GetTransitions(IList<IConversableAgent> agents, List<string> transitions)
         {
             var result = new List<IConversableAgent>();
-            foreach ( var transition in transitions) {
+            foreach (var transition in transitions)
+            {
                 result.Add(agents.First(a => a.Name == transition));
             }
             return result;
