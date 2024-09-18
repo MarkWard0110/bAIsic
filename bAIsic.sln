@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Interlocutor", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Interlocutor.Tests", "test\BAIsic.Interlocutor.Tests\BAIsic.Interlocutor.Tests.csproj", "{059D9A33-7387-44DD-90AD-985A8836A46D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.AgentWithOllama.Tests", "test\BAIsic.AgentWithOllama.Tests\BAIsic.AgentWithOllama.Tests.csproj", "{A55E17B9-54A0-4339-B3B7-F4930DA05A80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Interlocutor.Ollama.Tests", "test\BAIsic.Interlocutor.Ollama.Tests\BAIsic.Interlocutor.Ollama.Tests.csproj", "{A55E17B9-54A0-4339-B3B7-F4930DA05A80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAIsic.Interlocutor.Ollama", "src\BAIsic.Interlocutor.Ollama\BAIsic.Interlocutor.Ollama.csproj", "{922AA2F7-8575-4D26-A4C8-2C14BCD59868}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAIsic.Interlocutor.Ollama", "src\BAIsic.Interlocutor.Ollama\BAIsic.Interlocutor.Ollama.csproj", "{922AA2F7-8575-4D26-A4C8-2C14BCD59868}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

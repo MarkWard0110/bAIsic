@@ -292,6 +292,73 @@ namespace BAIsic.LlmApi.Ollama.Tests
             Assert.NotNull(chatResponse.Message);
         }
 
+        [Theory]
+        [RequireModelData(OllamaTestConsts.Model.Llama3_1_8b)]
+        public async Task InvokeChatCompletionAsync_ReturnsJsonChatResponse_WhenCallTextWithFormat(string model)
+        {
+            var ollamaClient = OllamaClientExtensions.CreateOllamaClient();
+
+            var chatRequest = new ChatRequest()
+            {
+                Model = model,
+                Stream = false,
+                Format = "json",
+                Options = new RequestOptions()
+                {
+                    Temperature = 0.5f,
+                    TopP = 1.0f,
+                },
+                Messages = [
+                    new Message()
+                    {
+                        Role = "system",
+                        Content = @"The user has provided a JSON-formatted answer.
+Output only the answer provided by the user.
+
+Repeat the exact input provided without making any changes or assumptions.
+
+Without a greeting or additional information."
+                    },
+                    new Message()
+                    {
+                        Role = "user",
+                        Content = @"A0 here, I have 4 chocolates.
+My chocolate count is even.
+
+Here's the combined JSON format from all teams:
+{
+""odd"": [""A2"", ""B1""],
+""even"": [""A0"", ""A1"", ""B0"", ""C0"", ""C1""]
+}
+"
+                    }
+                ]
+            };
+
+            var chatResponse = await ollamaClient.InvokeChatCompletionAsync(chatRequest);
+            Assert.NotNull(chatResponse);
+            Assert.NotNull(chatResponse.Message);
+            Assert.True(IsValidJson(chatResponse.Message.Content));
+            AssertChatResponseFinal(chatResponse);
+        }
+
+        private static bool IsValidJson(string input)
+        {
+            try
+            {
+                JsonDocument.Parse(input);
+                return true;
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+            catch (ArgumentNullException)
+            {
+                return false;
+            }
+        }
+
         private static void AssertChatResponseFinal(ChatResponse chatResponse)
         {
             Assert.NotNull(chatResponse);

@@ -3,7 +3,7 @@ using BAIsic.LlmApi.Ollama.Tests;
 using BAIsic.Tests;
 using Microsoft.VisualBasic;
 
-namespace BAIsic.AgentWithOllama.Tests
+namespace BAIsic.Interlocutor.Ollama.Tests
 {
     public class TellAJokeTests
     {

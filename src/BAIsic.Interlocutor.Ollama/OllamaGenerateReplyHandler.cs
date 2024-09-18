@@ -12,20 +12,19 @@ namespace BAIsic.Interlocutor.Ollama
     {
         private readonly OllamaClient _ollamaClient;
         private readonly string _model;
-        private readonly RequestOptions? _requestOptions;
+        private readonly OllamaOptions _ollamaOptions;
 
-        public OllamaGenerateReplyHandler(string model, OllamaClient ollamaClient, RequestOptions? requestOptions = null)
+        public OllamaGenerateReplyHandler(string model, OllamaClient ollamaClient, OllamaOptions? ollamaOptions = null)
         {
             _ollamaClient = ollamaClient;
             _model = model;
-            _requestOptions = requestOptions;
+            _ollamaOptions = ollamaOptions ?? new OllamaOptions();
         }
 
-        public OllamaGenerateReplyHandler(string model, HttpClient httpClient, RequestOptions? requestOptions = null) : this(model, new OllamaClient(httpClient), requestOptions)
+        public OllamaGenerateReplyHandler(string model, HttpClient httpClient, OllamaOptions? ollamaOptions = null) : this(model, new OllamaClient(httpClient), ollamaOptions)
         {
 
         }
-
 
         public async Task<(bool isDone, BAIsic.Interlocutor.Message? message)> GenerateReplyHandlerAsync(IEnumerable<BAIsic.Interlocutor.Message> messages)
         {
@@ -39,8 +38,8 @@ namespace BAIsic.Interlocutor.Ollama
             {
                 Model = _model,
                 Stream = false,
-                Options = _requestOptions,
-                KeepAlive = -1,
+                Options = _ollamaOptions.RequestOptions,
+                KeepAlive = _ollamaOptions.KeepAlive,
                 Messages = ollamaMessages
             };
 
