@@ -8,5 +8,7 @@ namespace BAIsic.Interlocutor.AzureOpenAI
 {
     public class AzureOpenAIOptions
     {
+        public RequestOptions? RequestOptions { get; set; } = null;
+        public string? ResponseFormat { get; set; } = null;
     }
 }

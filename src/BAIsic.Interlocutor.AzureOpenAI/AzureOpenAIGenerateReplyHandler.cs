@@ -38,7 +38,8 @@ namespace BAIsic.Interlocutor.AzureOpenAI
             {
                 Model = _model,
                 Stream = false,
-                Messages = ollamaMessages
+                Messages = ollamaMessages,
+                ResponseFormat = string.IsNullOrEmpty(_azureOpenAIOptions.ResponseFormat) ? null : new RequestResponseFormat { Type = _azureOpenAIOptions.ResponseFormat }
             };
 
             var chatResponse = await _azureOpenAIClient.InvokeChatCompletionAsync(chatRequest);

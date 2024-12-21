@@ -34,14 +34,14 @@ namespace BAIsic.Interlocutor.AzureOpenAI
             return AddAzureOpenAIGenerateReply(agent, model, httpClient, new AzureOpenAIOptions());
         }
 
-        //public static T AddAzureOpenAIGenerateReply<T>(this T agent, string model, AzureOpenAIClient azureOpenAIClient, RequestOptions requestOptions) where T : IAgent
-        //{
-        //    return AddAzureOpenAIGenerateReply(agent, model, azureOpenAIClient, new AzureOpenAIOptions() { RequestOptions = requestOptions });
-        //}
+        public static T AddAzureOpenAIGenerateReply<T>(this T agent, string model, AzureOpenAIClient azureOpenAIClient, RequestOptions requestOptions) where T : IAgent
+        {
+            return AddAzureOpenAIGenerateReply(agent, model, azureOpenAIClient, new AzureOpenAIOptions() { RequestOptions = requestOptions });
+        }
 
-        //public static T AddAzureOpenAIGenerateReply<T>(this T agent, string model, HttpClient httpClient, RequestOptions requestOptions) where T : IAgent
-        //{
-        //    return AddAzureOpenAIGenerateReply(agent, model, httpClient, new AzureOpenAIOptions() { RequestOptions = requestOptions });
-        //}
+        public static T AddAzureOpenAIGenerateReply<T>(this T agent, string model, HttpClient httpClient, RequestOptions requestOptions) where T : IAgent
+        {
+            return AddAzureOpenAIGenerateReply(agent, model, httpClient, new AzureOpenAIOptions() { RequestOptions = requestOptions });
+        }
     }
 }
