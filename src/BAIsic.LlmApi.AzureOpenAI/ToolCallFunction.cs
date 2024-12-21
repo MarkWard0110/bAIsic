@@ -5,17 +5,14 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BAIsic.LlmApi.Ollama
+namespace BAIsic.LlmApi.AzureOpenAI
 {
-    public class ToolFunction
+    public class ToolCallFunction
     {
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
 
-        [JsonPropertyName("description")]
-        public string Description { get; set; } = string.Empty;
-
-        [JsonPropertyName("parameters")]
-        public FunctionParameters? Parameters { get; set; }
+        [JsonPropertyName("arguments")]
+        public Dictionary<string, string>? Arguments { get; set; } 
     }
 }

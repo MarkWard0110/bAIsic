@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BAIsic.LlmApi.Ollama
+namespace BAIsic.LlmApi.AzureOpenAI
 {
     public class ToolFunction
     {
