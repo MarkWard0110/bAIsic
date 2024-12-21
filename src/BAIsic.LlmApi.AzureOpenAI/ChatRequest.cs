@@ -51,5 +51,11 @@ namespace BAIsic.LlmApi.AzureOpenAI
         [JsonPropertyName("top_p")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? TopP { get; set; }
+
+        /// <summary>
+        /// Specifies the desired structre of the response.
+        /// </summary>
+        [JsonPropertyName("response_format")]
+        public RequestResponseFormat? ResponseFormat { get; set; }
     }
 }
