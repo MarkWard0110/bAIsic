@@ -9,6 +9,26 @@ namespace BAIsic.LlmApi.Ollama
 {
     public class RequestOptions
     {
+        [JsonPropertyName("frequency_penalty")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public float? FrequencyPenalty { get; set; }
+
+        [JsonPropertyName("logits_all")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public bool? LogitsAll { get; set; }
+
+        [JsonPropertyName("low_vram")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public bool? LowVram { get; set; }
+
+        [JsonPropertyName("main_gpu")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? MainGpu { get; set; }
+
+        [JsonPropertyName("min_p")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public float? MinP { get; set; }
+
         /// <summary>
         /// Enable Mirostat sampling for controlling perplexity. (default: 0, 0 = disabled, 1 = Mirostat, 2 = Mirostat 2.0)
         /// </summary>
@@ -32,6 +52,10 @@ namespace BAIsic.LlmApi.Ollama
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? MiroStatTau { get; set; }
 
+        [JsonPropertyName("num_batch")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? NumBatch { get; set; }
+
         /// <summary>
         /// Sets the size of the context window used to generate the next token. (Default: 2048)
         /// </summary>
@@ -40,18 +64,29 @@ namespace BAIsic.LlmApi.Ollama
         public int? NumCtx { get; set; }
 
         /// <summary>
-        /// The number of GQA groups in the transformer layer. Required for some models, for example it is 8 for llama2:70b
-        /// </summary>
-        [JsonPropertyName("num_gqa")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? NumGqa { get; set; }
-
-        /// <summary>
         /// The number of layers to send to the GPU(s). On macOS it defaults to 1 to enable metal support, 0 to disable.
         /// </summary>
         [JsonPropertyName("num_gpu")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? NumGpu { get; set; }
+
+        ///// <summary>
+        ///// The number of GQA groups in the transformer layer. Required for some models, for example it is 8 for llama2:70b
+        ///// </summary>
+        //[JsonPropertyName("num_gqa")]
+        //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        //public int? NumGqa { get; set; }
+
+        [JsonPropertyName("num_keep")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? NumKeep { get; set; }
+
+        /// <summary>
+        /// Maximum number of tokens to predict when generating text. (Default: 2048, -1 = infinite generation, -2 = fill context)
+        /// </summary>
+        [JsonPropertyName("num_predict")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? NumPredict { get; set; }
 
         /// <summary>
         /// Sets the number of threads to use during computation. By default, Ollama will detect this for optimal performance.
@@ -60,6 +95,10 @@ namespace BAIsic.LlmApi.Ollama
         [JsonPropertyName("num_thread")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? NumThread { get; set; }
+
+        [JsonPropertyName("presence_penalty")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public float? PresencePenalty { get; set; }
 
         /// <summary>
         /// Sets how far back for the model to look back to prevent repetition. (Default: 64, 0 = disabled, -1 = num_ctx)
@@ -75,13 +114,6 @@ namespace BAIsic.LlmApi.Ollama
         [JsonPropertyName("repeat_penalty")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? RepeatPenalty { get; set; }
-
-        /// <summary>
-        /// The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8)
-        /// </summary>
-        [JsonPropertyName("temperature")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public float? Temperature { get; set; }
 
         /// <summary>
         /// Sets the random number seed to use for generation.
@@ -100,19 +132,19 @@ namespace BAIsic.LlmApi.Ollama
         public string[]? Stop { get; set; }
 
         /// <summary>
-        /// Tail free sampling is used to reduce the impact of less probable tokens from the output.
-        /// A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting. (default: 1)
+        /// The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8)
         /// </summary>
-        [JsonPropertyName("tfs_z")]
+        [JsonPropertyName("temperature")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public float? TfsZ { get; set; }
+        public float? Temperature { get; set; }
 
-        /// <summary>
-        /// Maximum number of tokens to predict when generating text. (Default: 2048, -1 = infinite generation, -2 = fill context)
-        /// </summary>
-        [JsonPropertyName("num_predict")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? NumPredict { get; set; }
+        ///// <summary>
+        ///// Tail free sampling is used to reduce the impact of less probable tokens from the output.
+        ///// A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting. (default: 1)
+        ///// </summary>
+        //[JsonPropertyName("tfs_z")]
+        //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        //public float? TfsZ { get; set; }
 
         /// <summary>
         /// Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative. (Default: 40)
@@ -127,5 +159,17 @@ namespace BAIsic.LlmApi.Ollama
         [JsonPropertyName("top_p")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? TopP { get; set; }
+
+        [JsonPropertyName("typical_p")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public float? TypicalP { get; set; }
+
+        [JsonPropertyName("use_mlock")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public bool? UseMLock { get; set; }
+
+        [JsonPropertyName("vocab_only")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public bool? VocabOnly { get; set; }
     }
 }
